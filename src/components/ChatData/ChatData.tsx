@@ -1,23 +1,23 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import {
-  FlatList,StyleSheet, Text, TextInput, TouchableOpacity, View, KeyboardAvoidingView, Keyboard,
+  FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View, KeyboardAvoidingView, Keyboard, Image
 } from 'react-native';
 import { ChatItem } from '../chatItem';
 
 export function ChatData() {
   const [data, setData] = useState<any>([]);
   const APIKey = process.env.API_KEY;
-  const endpointURL = "https://api.openai.com/v1/engines/text-davinci-002/completions";
+  const endpointURL = "https://api.openai.com/v1/engines/text-davinci-003/completions";
   const [textInput, setTextInput] = useState('');
-
+  const [loading, setLoader] = useState(false);
   const handleSend = async () => {
     const prompt = textInput;
-
+    setLoader(true)
     const response = await axios.post(endpointURL, {
       prompt: prompt,
       max_tokens: 1024,
-      temperature: 0.5
+      temperature: 0
     },
       {
         headers: {
@@ -25,12 +25,12 @@ export function ChatData() {
           "Authorization": `Bearer ${APIKey}`,
 
         }
-      });
+      })
     Keyboard.dismiss()
-
+    setLoader(false)
     const text = response.data.choices[0].text;
-
     setData([...data, { type: 'user', 'text': textInput }, { type: 'bot', 'text': text }]);
+    console.log('text :', text)
     setTextInput('');
 
   }
@@ -45,8 +45,15 @@ export function ChatData() {
           renderItem={({ item }) => (
             <ChatItem item={item} />
           )} />
+        {loading ? 
+        <View style={styles.imageBckg}><Image
+          source={require("../../../assets/images/loader.gif")}
+          style={styles.loader}
+        />
+        </View> : null}
         <TextInput style={[styles.input, {}]} value={textInput} onChangeText={text => setTextInput(text)}
           placeholder='Ask me anything!' placeholderTextColor={'#a8aaad'} />
+
         <TouchableOpacity style={styles.button} onPress={handleSend}>
           <Text style={styles.title}>Let's chat!</Text>
         </TouchableOpacity>
@@ -89,6 +96,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     color: 'white',
-
+  },
+  loader: {
+    width: 100,
+    height: 100
+  },
+  imageBckg:{
+    backgroundColor: 'transparent'
   }
 });
