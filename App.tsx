@@ -1,11 +1,15 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View } from "react-native";
+import { ChatData } from "./src/components/ChatData";
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>AI ChatBot</Text>
+      <View style={styles.textContainer}>
+        <Text style={styles.title}>AI ChatBot</Text>
+      </View>
       <StatusBar style="light" />
+      <ChatData />
     </View>
   );
 }
@@ -13,12 +17,14 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#202123',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#202123",
   },
-  title:{
-    color:'#fff',
-    
-  }
+  textContainer: {
+    alignSelf: "center",
+    marginTop: 100,
+  },
+  title: {
+    color: "#fff",
+    fontSize: 25,
+  },
 });
