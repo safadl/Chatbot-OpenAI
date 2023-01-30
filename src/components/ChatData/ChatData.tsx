@@ -4,10 +4,9 @@ import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'r
 
 export function ChatData() {
   const [data, setData] = useState<any>([]);
-  const APIKey = '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';
+  const APIKey = process.env.API_KEY;
   const endpointURL = "https://api.openai.com/v1/engines/text-davinci-002/completions";
   const [textInput, setTextInput] = useState('');
-
   const handleSend = async () => {
     const prompt = textInput;
 
