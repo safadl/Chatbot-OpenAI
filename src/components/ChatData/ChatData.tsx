@@ -12,16 +12,19 @@ export function ChatData() {
   const endpointURL = "https://api.openai.com/v1/engines/text-davinci-003/completions";
   const [textInput, setTextInput] = useState('');
   const [loading, setLoader] = useState(false);
+
+
   const handleSend = async () => {
     const prompt = textInput;
     setLoader(true)
     const response = await axios.post(endpointURL, {
       prompt: prompt,
-      max_tokens: 1024,
+      max_tokens: 100,
       temperature: 0,
       top_p: 1,
       frequency_penalty: 0,
       presence_penalty: 0,
+
     },
       {
         headers: {
@@ -31,9 +34,13 @@ export function ChatData() {
         }
       })
     Keyboard.dismiss()
+
     setLoader(false)
+
     const text = response.data.choices[0].text;
+
     setData([...data, { type: 'user', 'text': textInput }, { type: 'bot', 'text': text }]);
+
     console.log('text :', text)
     setTextInput('');
 
@@ -49,21 +56,21 @@ export function ChatData() {
           renderItem={({ item }) => (
             <ChatItem item={item} />
           )} />
-        {loading ?
-          <View style={styles.imageBckg}><Image
-            source={require("../../../assets/images/loader.gif")}
-            style={styles.loader}
-          />
-          </View> : null}
-        <TextInput style={[styles.input, {}]} value={textInput} onChangeText={text => setTextInput(text)}
-          placeholder='Ask me anything...' placeholderTextColor={'#a8aaad'} />
+        <View style={styles.inputContainer}>
+          <TextInput style={[styles.input, {}]} value={textInput} onChangeText={text => setTextInput(text)}
+            placeholder='Ask me anything...' placeholderTextColor={'#a8aaad'} />
 
-        <TouchableOpacity style={styles.button} onPress={handleSend}>
-                <Ionicons name='send' size={16} color="#05b5af" />
-
-          <Text style={styles.title}>Send</Text>
-        </TouchableOpacity>
-
+          <TouchableOpacity style={styles.button} onPress={handleSend}>
+            {loading ?
+              <View style={styles.imageBckg}>
+                <Image
+                  source={require("../../../assets/images/simple_loading.gif")}
+                  style={styles.loader}
+                />
+              </View>
+              : <Ionicons name='send' size={20} color="#6986fe" />}
+          </TouchableOpacity>
+        </View>
       </View>
     </KeyboardAvoidingView>
 
@@ -82,20 +89,20 @@ const styles = StyleSheet.create({
   title: {
     color: '#202123',
     margin: 4,
-    fontSize:15,
-    marginLeft:10,
-    marginRight:10
+    fontSize: 15,
+    marginLeft: 10,
+    marginRight: 10
   },
   button: {
-    backgroundColor: 'rgba(255,255,255,0.9)',
-    margin: 10,
+    backgroundColor: 'transparent',
     padding: 5,
     borderRadius: 5,
-    flexDirection:'row',
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-  
-    
+    position: 'absolute',
+    right: 5,
+    alignSelf: 'center',
   },
   body: {
     backgroundColor: '#fffc9',
@@ -104,7 +111,7 @@ const styles = StyleSheet.create({
   },
   input: {
     borderColor: "#fff",
-    borderWidth: 0.5,
+    borderWidth: 0.3,
     width: "90%",
     height: 60,
     borderRadius: 10,
@@ -112,10 +119,14 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   loader: {
-    width: 100,
-    height: 100
+    width: 40,
+    height: 40,
+    resizeMode: 'contain'
   },
   imageBckg: {
     backgroundColor: 'transparent'
+  },
+  inputContainer: {
+    flexDirection: 'row',
   }
 });
