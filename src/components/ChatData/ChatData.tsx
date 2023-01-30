@@ -8,10 +8,16 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 
 export function ChatData() {
   const [data, setData] = useState<any>([]);
+
   const APIKey = process.env.API_KEY;
+
   const endpointURL = "https://api.openai.com/v1/engines/text-davinci-003/completions";
+
   const [textInput, setTextInput] = useState('');
+
   const [loading, setLoader] = useState(false);
+
+  const [hasData, setHasData] = useState(false);
 
 
   const handleSend = async () => {
@@ -40,6 +46,8 @@ export function ChatData() {
     const text = response.data.choices[0].text;
 
     setData([...data, { type: 'user', 'text': textInput }, { type: 'bot', 'text': text }]);
+    if (data)
+      setHasData(true)
 
     console.log('text :', text)
     setTextInput('');
@@ -49,17 +57,21 @@ export function ChatData() {
     <KeyboardAvoidingView behavior="padding" style={styles.keyboard}>
 
       <View style={styles.container}>
-
-        <FlatList data={data}
-          keyExtractor={(item, index) => index.toString()}
-          style={styles.body}
-          renderItem={({ item }) => (
-            <ChatItem item={item} />
-          )} />
+        {hasData ?
+          <FlatList data={data}
+            keyExtractor={(item, index) => index.toString()}
+            style={styles.body}
+            renderItem={({ item }) => (
+              <ChatItem item={item} />
+            )} />
+          : <View style={styles.labelContainer}>
+            <Image style={styles.imgStyle} source={require('../../../assets/images/magnifying-glass.png')} />
+            <Text style={styles.label}>No conversations yet!</Text>
+          </View>
+        }
         <View style={styles.inputContainer}>
           <TextInput style={[styles.input, {}]} value={textInput} onChangeText={text => setTextInput(text)}
             placeholder='Ask me anything...' placeholderTextColor={'#a8aaad'} />
-
           <TouchableOpacity style={styles.button} onPress={handleSend}>
             {loading ?
               <View style={styles.imageBckg}>
@@ -72,6 +84,7 @@ export function ChatData() {
           </TouchableOpacity>
         </View>
       </View>
+
     </KeyboardAvoidingView>
 
   );
@@ -128,5 +141,17 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flexDirection: 'row',
+  },
+  labelContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems:'center'
+  },
+  label:{
+    color:'#d7d7d9'
+  },
+  imgStyle:{
+    width:230,
+    height:230
   }
 });
