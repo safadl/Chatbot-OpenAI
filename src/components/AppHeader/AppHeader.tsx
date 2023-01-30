@@ -1,11 +1,10 @@
-import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Image } from "react-native";
 
 export default function AppHeader() {
     return (
         <View style={styles.appHeader}>
             <View style={styles.textContainer}>
-                <Text style={styles.title}>AI ChatBot</Text>
+                <Text style={styles.title}>Let's Chat!</Text>
             </View>
         </View>
     )
@@ -18,7 +17,7 @@ const styles = StyleSheet.create({
     },
     textContainer: {
         alignSelf: "center",
-        marginTop: 100,
+        marginTop: 80,
     },
     title: {
         color: "#fff",
