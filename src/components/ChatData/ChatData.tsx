@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ChatItem } from '../chatItem';
 
 export function ChatData() {
   const [data, setData] = useState<any>([]);
@@ -31,24 +32,21 @@ export function ChatData() {
   }
   return (
     <View style={styles.container}>
+
       <FlatList data={data}
         keyExtractor={(item, index) => index.toString()}
         style={styles.body}
         renderItem={({ item }) => (
-          <View style={styles.listItem} >
-            <Text style={[styles.textItem, { color: item.type === 'user' ? 'green' : 'red' }]}>
-              {item.type === "user" ? 'You' : 'Bot'}
-            </Text>
-            <Text style={styles.bot}>
-              {item.text}
-            </Text>
-          </View>
+          <ChatItem item={item} />
         )} />
+
       <TextInput style={styles.input} value={textInput} onChangeText={text => setTextInput(text)}
         placeholder='Ask me anything!' placeholderTextColor={'#a8aaad'} />
+
       <TouchableOpacity style={styles.button} onPress={handleSend}>
         <Text style={styles.title}>Let's chat!</Text>
       </TouchableOpacity>
+
     </View>
   );
 }
@@ -73,17 +71,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fffc9',
     width: '102%',
     margin: 10,
-  },
-  listItem: {
-    flexDirection: 'row',
-    padding: 10
-  },
-  textItem: {
-    fontWeight: 'bold',
-  },
-  bot: {
-    fontSize: 16,
-    color: "#fff",
   },
   input: {
     borderColor: "#fff",
