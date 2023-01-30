@@ -8,7 +8,7 @@ type Item = {
 export function ChatItem({ item }: { item: Item }) {
     return (
         <View style={styles.listItem} >
-            <Text style={[styles.textItem, { color: item.type === 'user' ? '#05b5af' : '#189ec7' }]}>
+            <Text style={[styles.textItem, { color: item.type === 'user' ? '#6986fe' : '#189ec7' }]}>
                 {item.type === "user" ? 'You' : null}
             </Text>
             {item.type === 'user' ? null : <Image style={{ width: 30, height: 50 }} source={require('../../../assets/images/bot-logo.png')} />
@@ -28,8 +28,6 @@ const styles = StyleSheet.create({
         padding: 20,
         marginRight: 10,
         marginLeft: 10,
-
-
     },
     textItem: {
         fontWeight: 'bold',
@@ -37,10 +35,10 @@ const styles = StyleSheet.create({
     bot: {
         fontSize: 16,
         color: "#fff",
-        padding: 20
+        padding: 20,
     },
     textViewUser: {
-        backgroundColor: '#05b5af',
+        backgroundColor: '#6986fe',
         borderTopEndRadius: 15,
         borderBottomEndRadius: 15,
         borderBottomLeftRadius: 15,
@@ -48,7 +46,7 @@ const styles = StyleSheet.create({
         marginLeft: 15,
     },
     textViewBot: {
-        backgroundColor: '#189ec7',
+        backgroundColor: '#303346',
         borderTopEndRadius: 15,
         borderBottomEndRadius: 15,
         borderBottomLeftRadius: 15,
