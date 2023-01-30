@@ -4,6 +4,7 @@ import {
   FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View, KeyboardAvoidingView, Keyboard, Image
 } from 'react-native';
 import { ChatItem } from '../chatItem';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 export function ChatData() {
   const [data, setData] = useState<any>([]);
@@ -17,7 +18,10 @@ export function ChatData() {
     const response = await axios.post(endpointURL, {
       prompt: prompt,
       max_tokens: 1024,
-      temperature: 0
+      temperature: 0,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
     },
       {
         headers: {
@@ -45,17 +49,19 @@ export function ChatData() {
           renderItem={({ item }) => (
             <ChatItem item={item} />
           )} />
-        {loading ? 
-        <View style={styles.imageBckg}><Image
-          source={require("../../../assets/images/loader.gif")}
-          style={styles.loader}
-        />
-        </View> : null}
+        {loading ?
+          <View style={styles.imageBckg}><Image
+            source={require("../../../assets/images/loader.gif")}
+            style={styles.loader}
+          />
+          </View> : null}
         <TextInput style={[styles.input, {}]} value={textInput} onChangeText={text => setTextInput(text)}
-          placeholder='Ask me anything!' placeholderTextColor={'#a8aaad'} />
+          placeholder='Ask me anything...' placeholderTextColor={'#a8aaad'} />
 
         <TouchableOpacity style={styles.button} onPress={handleSend}>
-          <Text style={styles.title}>Let's chat!</Text>
+                <Ionicons name='send' size={16} color="#05b5af" />
+
+          <Text style={styles.title}>Send</Text>
         </TouchableOpacity>
 
       </View>
@@ -75,13 +81,21 @@ const styles = StyleSheet.create({
   },
   title: {
     color: '#202123',
-    margin: 4
+    margin: 4,
+    fontSize:15,
+    marginLeft:10,
+    marginRight:10
   },
   button: {
-    backgroundColor: "#fff",
+    backgroundColor: 'rgba(255,255,255,0.9)',
     margin: 10,
     padding: 5,
-    borderRadius: 5
+    borderRadius: 5,
+    flexDirection:'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  
+    
   },
   body: {
     backgroundColor: '#fffc9',
@@ -101,7 +115,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100
   },
-  imageBckg:{
+  imageBckg: {
     backgroundColor: 'transparent'
   }
 });
