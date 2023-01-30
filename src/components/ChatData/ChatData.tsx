@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  FlatList,StyleSheet, Text, TextInput, TouchableOpacity, View, KeyboardAvoidingView, Keyboard,
+} from 'react-native';
 import { ChatItem } from '../chatItem';
 
 export function ChatData() {
@@ -8,6 +10,7 @@ export function ChatData() {
   const APIKey = process.env.API_KEY;
   const endpointURL = "https://api.openai.com/v1/engines/text-davinci-002/completions";
   const [textInput, setTextInput] = useState('');
+
   const handleSend = async () => {
     const prompt = textInput;
 
@@ -23,31 +26,34 @@ export function ChatData() {
 
         }
       });
+    Keyboard.dismiss()
 
     const text = response.data.choices[0].text;
 
     setData([...data, { type: 'user', 'text': textInput }, { type: 'bot', 'text': text }]);
-
     setTextInput('');
+
   }
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView behavior="padding" style={styles.keyboard}>
 
-      <FlatList data={data}
-        keyExtractor={(item, index) => index.toString()}
-        style={styles.body}
-        renderItem={({ item }) => (
-          <ChatItem item={item} />
-        )} />
+      <View style={styles.container}>
 
-      <TextInput style={styles.input} value={textInput} onChangeText={text => setTextInput(text)}
-        placeholder='Ask me anything!' placeholderTextColor={'#a8aaad'} />
+        <FlatList data={data}
+          keyExtractor={(item, index) => index.toString()}
+          style={styles.body}
+          renderItem={({ item }) => (
+            <ChatItem item={item} />
+          )} />
+        <TextInput style={[styles.input, {}]} value={textInput} onChangeText={text => setTextInput(text)}
+          placeholder='Ask me anything!' placeholderTextColor={'#a8aaad'} />
+        <TouchableOpacity style={styles.button} onPress={handleSend}>
+          <Text style={styles.title}>Let's chat!</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={handleSend}>
-        <Text style={styles.title}>Let's chat!</Text>
-      </TouchableOpacity>
+      </View>
+    </KeyboardAvoidingView>
 
-    </View>
   );
 }
 
@@ -57,12 +63,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20
   },
+  keyboard: {
+    flex: 1,
+  },
   title: {
-    color: '#fff',
+    color: '#202123',
     margin: 4
   },
   button: {
-    backgroundColor: "#05b5af",
+    backgroundColor: "#fff",
     margin: 10,
     padding: 5,
     borderRadius: 5
@@ -79,6 +88,7 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 10,
     padding: 10,
-    color: 'white'
+    color: 'white',
+
   }
 });
