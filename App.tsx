@@ -1,13 +1,12 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
+import AppHeader from "./src/components/AppHeader/AppHeader";
 import { ChatData } from "./src/components/ChatData";
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <View style={styles.textContainer}>
-        <Text style={styles.title}>AI ChatBot</Text>
-      </View>
+      <AppHeader/>
       <StatusBar style="light" />
       <ChatData />
     </View>
