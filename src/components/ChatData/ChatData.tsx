@@ -141,6 +141,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flexDirection: 'row',
+    marginBottom:16
   },
   labelContainer: {
     flex: 1,

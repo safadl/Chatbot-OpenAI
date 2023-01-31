@@ -11,7 +11,7 @@ export function ChatItem({ item }: { item: Item }) {
             <Text style={[styles.textItem, { color: item.type === 'user' ? '#6986fe' : '#189ec7' }]}>
                 {item.type === "user" ? 'You' : null}
             </Text>
-            {item.type === 'user' ? null : <Image style={{ width: 30, height: 50 }} source={require('../../../assets/images/bot-logo.png')} />
+            {item.type === 'user' ? null : <Image style={{ width: 30, height: 100 }} source={require('../../../assets/images/bot-logoo.png')} />
             }
             <View style={item.type === "user" ? styles.textViewUser : styles.textViewBot}>
                 <Text style={styles.bot}>
