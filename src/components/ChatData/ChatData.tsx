@@ -25,7 +25,7 @@ export function ChatData() {
     setLoader(true)
     const response = await axios.post(endpointURL, {
       prompt: prompt,
-      max_tokens: 100,
+      max_tokens: 1024,
       temperature: 0,
       top_p: 1,
       frequency_penalty: 0,
@@ -45,7 +45,7 @@ export function ChatData() {
 
     const text = response.data.choices[0].text;
 
-    setData([...data, { type: 'user', 'text': textInput }, { type: 'bot', 'text': text }]);
+    setData([...data, { type: 'user', 'text': textInput }, { type: 'bot', 'text': text.trim() }]);
     if (data)
       setHasData(true)
 
