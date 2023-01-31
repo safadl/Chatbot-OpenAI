@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
     title: {
         color: "#fff",
         fontSize: 25,
+        letterSpacing:0.8,
     },
     appHeader: {
         flexDirection: 'row',
